@@ -15,20 +15,30 @@ parser.add_argument("-f", "--file", dest="filename", required=True,
 args = parser.parse_args()
 
 # CSV reader
-f = open(args.filename, 'r')
 # Each transaction is a 5-tuple of:
 # ('Type', 'Trans Date', 'Post Date', 'Description', 'Amount')
+f = open(args.filename, 'r')
 transactions = [row for row in csv.reader(f)][1:]
-print(transactions)
 
-# Sort the list by transaction date
+# Sort the transactios by transaction date
 strptime = datetime.datetime.strptime
 transactions = sorted(transactions, key=lambda row: strptime(row[1], "%m/%d/%Y"))
 
+totalSpending = 0.0
+totalPayment = 0.0
+for trans in transactions:
+    type, transDate, postDate, desc, amount = trans
+    type = type.upper()
+    amount = float(amount)
 
-for transaction in transactions:
-    print transaction
+    if type == 'SALE':
+        totalSpending += amount
+    elif type == 'RETURN':
+        totalSpending -= amount
+    elif type == 'PAYMENT':
+        totalPayment += amount
 
-
+print("Total credit card spending is: %s" % totalSpending)
+print("Total credit card payment is: %s" % totalPayment)
 
 f.close()
