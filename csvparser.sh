@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import argparse, os, csv
+import argparse, datetime, os, csv
 
 def is_valid_file(path, argparser):
     if not os.path.exists(path):
@@ -16,9 +16,19 @@ args = parser.parse_args()
 
 # CSV reader
 f = open(args.filename, 'r')
-reader = csv.reader(f)
+# Each transaction is a 5-tuple of:
+# ('Type', 'Trans Date', 'Post Date', 'Description', 'Amount')
+transactions = [row for row in csv.reader(f)][1:]
+print(transactions)
 
-reader = reader[1::]
+# Sort the list by transaction date
+strptime = datetime.datetime.strptime
+transactions = sorted(transactions, key=lambda row: strptime(row[1], "%m/%d/%Y"))
+
+
+for transaction in transactions:
+    print transaction
+
 
 
 f.close()
