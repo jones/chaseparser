@@ -2,3 +2,7 @@
 ***
 
 `chaseparser` calculates how much money you've spent with your Chase credit card. Surprisingly this feature isn't availibe on the chase website so I've written a quick script to fix that. This script is invaluable for those for trying to make their sign-up bonus and need to know how close they are to their goal.
+
+# Instructions
+
+Download your account activity from the Chase website as a CSV then run `./csvparser --file Activity.CSV`.
